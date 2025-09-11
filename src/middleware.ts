@@ -11,12 +11,23 @@ function isAssetPath(pathname: string): boolean {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Allow access page and API for setting cookie
+  if (pathname.startsWith('/auth') || pathname.startsWith('/api/access')) {
+    return NextResponse.next();
+  }
+
   if (isAssetPath(pathname)) {
     return NextResponse.next();
   }
 
   const user = process.env.BASIC_AUTH_USER;
   const pass = process.env.BASIC_AUTH_PASS;
+  const accessCookie = request.cookies.get('access_granted');
+
+  // If cookie set, allow
+  if (accessCookie?.value === '1') {
+    return NextResponse.next();
+  }
 
   // If not configured, allow free access
   if (!user || !pass) {
@@ -33,6 +44,14 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
       }
     }
+  }
+
+  // Try to trigger Basic Auth dialog; if device does not show it, redirect to /auth
+  const wantsHtml = request.headers.get('accept')?.includes('text/html');
+  if (wantsHtml) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/auth';
+    return NextResponse.redirect(url);
   }
 
   return new NextResponse('Authentication required', {
