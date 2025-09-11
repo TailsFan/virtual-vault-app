@@ -48,9 +48,9 @@ export default function CatalogPage() {
   }, [categorySlug]);
 
   return (
-    <div className="container py-12 md:py-20">
+    <div className="container py-8 md:py-20">
         <h1 className="text-3xl font-bold tracking-tight mb-8">{title}</h1>
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {loading ? (
               Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="flex flex-col space-y-3">

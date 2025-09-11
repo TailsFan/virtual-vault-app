@@ -124,7 +124,7 @@ export function ProductManagement() {
   return (
     <Card>
       <CardHeader>
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center">
             <div>
                 <CardTitle>Управление товарами</CardTitle>
                 <CardDescription>Добавление, изменение и удаление товаров.</CardDescription>
@@ -157,6 +157,7 @@ export function ProductManagement() {
       </CardHeader>
       <CardContent>
         {loading ? <p>Загрузка товаров...</p> : (
+        <div className="w-full overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -222,6 +223,7 @@ export function ProductManagement() {
             ))}
           </TableBody>
         </Table>
+        </div>
         )}
       </CardContent>
     </Card>

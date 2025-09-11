@@ -76,6 +76,7 @@ export function UserManagement() {
         {loading ? (
           <p>Загрузка пользователей...</p>
         ) : (
+          <div className="w-full overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -109,6 +110,7 @@ export function UserManagement() {
               ))}
             </TableBody>
           </Table>
+          </div>
         )}
       </CardContent>
     </Card>
