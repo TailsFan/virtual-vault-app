@@ -62,5 +62,8 @@ body {
     background-image: radial-gradient(circle at 1px 1px, hsl(var(--primary) / 0.1), transparent 1px),
                       radial-gradient(circle at 15px 15px, hsl(var(--primary) / 0.1), transparent 15px);
     background-size: 30px 30px;
+    /* Respect safe areas (Android/iOS) */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
