@@ -41,36 +41,31 @@ export default function SearchPage() {
     
     try {
       const productsCollection = collection(db, "Products");
-      // Поиск по названию продукта (регистронезависимый)
-      const q = query(
-        productsCollection,
-        where("name", ">=", query.toLowerCase()),
-        where("name", "<=", query.toLowerCase() + "\uf8ff")
-      );
-      
-      const productSnapshot = await getDocs(q);
-      const productList = productSnapshot.docs.map(doc => ({ 
+      // Получаем все продукты и фильтруем на клиенте
+      const allProductsSnapshot = await getDocs(productsCollection);
+      const allProducts = allProductsSnapshot.docs.map(doc => ({ 
         id: doc.id, 
         ...doc.data() 
       } as Product));
       
-      // Если точного совпадения нет, попробуем поиск по частичному совпадению
-      if (productList.length === 0) {
-        const allProductsSnapshot = await getDocs(productsCollection);
-        const allProducts = allProductsSnapshot.docs.map(doc => ({ 
-          id: doc.id, 
-          ...doc.data() 
-        } as Product));
+      // Поиск по названию и описанию (регистронезависимый)
+      const searchTerm = query.toLowerCase().trim();
+      const filteredProducts = allProducts.filter(product => {
+        const name = product.name?.toLowerCase() || '';
+        const description = product.description?.toLowerCase() || '';
+        const category = product.category?.toLowerCase() || '';
         
-        const filteredProducts = allProducts.filter(product => 
-          product.name.toLowerCase().includes(query.toLowerCase()) ||
-          product.description?.toLowerCase().includes(query.toLowerCase())
-        );
-        
-        setProducts(filteredProducts);
-      } else {
-        setProducts(productList);
-      }
+        return name.includes(searchTerm) || 
+               description.includes(searchTerm) ||
+               category.includes(searchTerm);
+      });
+      
+      console.log('Search term:', searchTerm);
+      console.log('Total products:', allProducts.length);
+      console.log('Found products:', filteredProducts.length);
+      console.log('All product names:', allProducts.map(p => p.name));
+      
+      setProducts(filteredProducts);
     } catch (error) {
       console.error('Ошибка поиска:', error);
       setProducts([]);
