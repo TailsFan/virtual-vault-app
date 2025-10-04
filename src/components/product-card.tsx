@@ -102,33 +102,33 @@ export function ProductCard({ product, className }: ProductCardProps) {
             width={600}
             height={400}
             data-ai-hint={product.dataAiHint}
-            className="w-full h-44 sm:h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </Link>
       </CardHeader>
       <CardContent className="p-4 flex-grow">
-        <p className="text-[11px] sm:text-xs text-muted-foreground">{product.category}</p>
-        <CardTitle className="mt-1 text-base sm:text-lg">
+        <p className="text-xs text-muted-foreground">{product.category}</p>
+        <CardTitle className="mt-1 text-lg">
           <Link href={`/product/${product.id}`} className="hover:text-primary transition-colors">
             {product.name}
           </Link>
         </CardTitle>
-        <div className="mt-2 flex items-center gap-2 text-xs sm:text-sm">
+        <div className="mt-2 flex items-center gap-2 text-sm">
           <div className="flex items-center gap-1 text-amber-500">
-            <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
+            <Star className="w-4 h-4 fill-current" />
             <span>{product.rating.toFixed(1)}</span>
           </div>
           <span className="text-muted-foreground">({product.reviews})</span>
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex justify-between items-center gap-2">
-        <div>
-          <p className="text-lg sm:text-xl font-bold">{product.price.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 })}</p>
+      <CardFooter className="p-4 pt-0 flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-2">
+        <div className="flex-shrink-0">
+          <p className="text-xl font-bold">{product.price.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 })}</p>
           {product.originalPrice && (
-            <p className="text-xs sm:text-sm text-muted-foreground line-through">{product.originalPrice.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 })}</p>
+            <p className="text-sm text-muted-foreground line-through">{product.originalPrice.toLocaleString('ru-RU', { style: 'currency', currency: 'RUB', minimumFractionDigits: 0 })}</p>
           )}
         </div>
-        <Button size="sm" className="sm:size-default" onClick={handleAddToCart}>В корзину</Button>
+        <Button onClick={handleAddToCart} className="w-full sm:w-auto">В корзину</Button>
       </CardFooter>
     </Card>
   );
