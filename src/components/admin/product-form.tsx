@@ -30,7 +30,7 @@ const formSchema = z.object({
 
 
 type ProductFormProps = {
-  onSubmit: (values: z.infer<typeof formSchema>) => void;
+  onSubmit: (values: Partial<Product>) => void;
   product?: Product | null;
   onCancel: () => void;
 };
@@ -82,10 +82,17 @@ export function ProductForm({ onSubmit, product, onCancel }: ProductFormProps) {
     }, [product, form]);
 
     const handleSubmit = (values: z.infer<typeof formSchema>) => {
-        const submissionValues = {
+        const originalPriceNumber = Number(values.originalPrice);
+        const submissionValues: Partial<Product> = {
             ...values,
-            originalPrice: Number(values.originalPrice) || undefined,
         };
+
+        if (originalPriceNumber > 0) {
+            submissionValues.originalPrice = originalPriceNumber;
+        } else {
+            delete submissionValues.originalPrice;
+        }
+
         onSubmit(submissionValues);
     };
 
